@@ -1,0 +1,22 @@
+version: '3'
+services:
+  jetstream:
+    image: nats:latest
+    container_name: jetstream
+    ports:
+      - 4222:4222
+    entrypoint: /nats-server
+    command: -js
+
+  memphis-app:
+    build: .
+    entrypoint: sleep 1d
+    environment:
+      - nats_jetstream=nats://jetstream:4222
+    depends_on:
+      - jetstream
+
+
+
+#to run it: sudo docker-compose up
+
